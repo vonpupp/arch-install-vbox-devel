@@ -16,7 +16,7 @@ VBoxManage hostonlyif ipconfig vboxnet1 --ip 10.2.0.254 --netmask 255.255.0.0
 VBoxManage createvm --name "$VMNAME" --ostype "$VMOSTYPE" --register
 
 # EFI
-VBoxManage modifyvm "$VMNAME" --firmware efi64
+#VBoxManage modifyvm "$VMNAME" --firmware efi64
 
 # CPU and Memory
 VBoxManage modifyvm "$VMNAME" --cpus 1 --cpuexecutioncap 80 --memory 512
