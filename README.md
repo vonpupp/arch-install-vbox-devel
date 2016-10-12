@@ -18,11 +18,13 @@ automate a system deploy using Ansible.
    to the appropriate ISO file, and the `VDIDISKNAME` to the place where you
    want to store your VDI file.
 2. Execute the `create-vm.sh` script to create a VirtualBox VM named as the
-   `VMNAME` variable. This script will at the end trigger automatically the `start-vm.sh` script.
+   `VMNAME` variable. This script will at the end trigger automatically the
+   `start-vm.sh` script.
 
 ## Destroying the VM
 
-1. Execute the `destroy-vm.sh` script. This script will first stop the VM using the `stop-vm.sh` script.
+1. Execute the `destroy-vm.sh` script. This script will first stop the VM using
+   the `stop-vm.sh` script.
 
 ## The first time the VM is started
 
@@ -44,12 +46,19 @@ Once SSH is started you can continue on the host (it feels more comfortable to
 work on terminal rather than the vbox GUI):
 
 ```shell
-# (optional) In case an old ssh id already exists, remove it
-ssh-keygen -R "[localhost]:2222"
-
-# Bootstrap the VM
-ssh root@localhost -p 2222 'bash -s' <vm-bootstrap.sh
+bootstrap.sh
 ```
+
+This script will call the `bootstrap-guest.sh` within the guest and will clone
+several repositories that I find useful:
+- The [partition repo] for partitioning using LUKS/LVM
+- The [installer repo] which is an automated installer written in BASH. The
+  settings matches the prior script (uses the same crypto-lvm device)
+- The [provision repo] that will install the rest of packages and configure
+  them.
+
+The bootstrap script does not handle automatically the rest of the scripts
+execution. At this time this needs to be done manually.
 
 ## Assumptions and VM parameters
 
@@ -57,5 +66,18 @@ ssh root@localhost -p 2222 'bash -s' <vm-bootstrap.sh
 - Firmware: EFI (64bits)
 - Memory: 512MB
 - CPU: 1 Core
+- Size: 50Gb
 
 You can change this on the `create-vm.sh` script according to your needs.
+
+## See also
+
+- [partition repo](https://github.com/vonpupp/arch-install-scripts.git "LUKS/LVM Partitioning")
+- [installer repo](https://github.com/vonpupp/arch-installer.git "BASH Installer (branch: feature/efi-crypt)")
+- [provision repo](https://github.com/vonpupp/ansible-personal.git "Ansible playbook for provision")
+
+## Todo
+-[] Automate the other helpers scripts execution
+-[] Create a vagrant box based on the result
+-[] Move the [partition repo] to pure Ansible?
+-[] Patch the [installer repo] for unattended setup
