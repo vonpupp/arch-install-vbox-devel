@@ -35,7 +35,7 @@ VBoxManage storageattach "$VMNAME" --storagectl "IDE Controller" \
     --type dvddrive --port 0 --device 0 --medium "$ISOMEDIAFILE"
 
 # HDD
-VBoxManage createhd --filename "$VDIDISKNAME" --size 20480
+VBoxManage createhd --filename "$VDIDISKNAME" --size $VDIDISKSIZE
 VBoxManage storagectl "$VMNAME" --name "SATA Controller" \
     --add sata --controller IntelAHCI --hostiocache on --bootable on
 VBoxManage storageattach "$VMNAME" --storagectl "SATA Controller" \
@@ -46,4 +46,4 @@ mkdir -p $DIR/shared-"$VMNAME"
 VBoxManage sharedfolder add "$VMNAME" --name share-folder \
     --hostpath $DIR/shared-"$VMNAME" --automount
 
-./start-vm.sh
+./vm-start.sh

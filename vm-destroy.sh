@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./stop-vm.sh
+./vm-stop.sh
 
 source vars.sh
 
