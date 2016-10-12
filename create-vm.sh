@@ -32,16 +32,18 @@ VBoxManage modifyvm "$VMNAME" --natpf1 \
 VBoxManage storagectl "$VMNAME" --name "IDE Controller" \
     --add ide --controller PIIX4 --hostiocache on --bootable on
 VBoxManage storageattach "$VMNAME" --storagectl "IDE Controller" \
-    --type dvddrive --port 0 --device 0 --medium "$MEDIA"
+    --type dvddrive --port 0 --device 0 --medium "$ISOMEDIAFILE"
 
 # HDD
-VBoxManage createhd --filename "$VMNAME".vdi --size 20480
+VBoxManage createhd --filename "$VDIDISKNAME" --size 20480
 VBoxManage storagectl "$VMNAME" --name "SATA Controller" \
     --add sata --controller IntelAHCI --hostiocache on --bootable on
 VBoxManage storageattach "$VMNAME" --storagectl "SATA Controller" \
-    --type hdd --port 0 --device 0 --medium "$VMNAME.vdi"
+    --type hdd --port 0 --device 0 --medium "$VDIDISKNAME"
 
 # Share
 mkdir -p $DIR/shared-"$VMNAME"
 VBoxManage sharedfolder add "$VMNAME" --name share-folder \
     --hostpath $DIR/shared-"$VMNAME" --automount
+
+./start-vm.sh

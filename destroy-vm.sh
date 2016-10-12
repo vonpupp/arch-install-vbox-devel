@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./stop-vm.sh
+
 source vars.sh
 
 # Share
